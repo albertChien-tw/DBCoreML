@@ -22,50 +22,50 @@ public class VisionClient :APIClient{
 
    public static let baseUrl = "https://southcentralus.api.cognitive.microsoft.com"
 
-   public var configure:VisionConfigure = VisionConfigure.init(projectId: "51219413-433b-497c-b19c-6462545ca9cc", trainingKey: "53b9b55c56a14528937ea3848eab1e8c")
+   public var configure:VisionConfigure = VisionConfigure.init(projectId: "", trainingKey: "")
 
-   public func queryIteration(endpoint: VisionEndpoint, completion: @escaping (Result<[GetIterations]>) -> Void) {
+    func queryIteration(endpoint: VisionEndpoint, completion: @escaping (Result<[GetIterations]>) -> Void) {
         let request = endpoint.request
        
         get(request: request, completion: completion)
     }
     
-   public func creatTag(endpoint:VisionEndpoint,completion:@escaping (Result<Content>)->()){
+    func creatTag(endpoint:VisionEndpoint,completion:@escaping (Result<Content>)->()){
         let request = endpoint.request
-       URLSession.shared
+
         post(request: request, completion: completion)
     }
     
-   public func downloadModel(url:String,completion:@escaping (Result<URL>)->()){
+    func downloadModel(url:String,completion:@escaping (Result<URL>)->()){
        
         download(url:URL.init(string: url)!, completion: completion)
        
     }
     
-   public func createImagesFromData(endpoint:VisionEndpoint,completion:@escaping (Result<CreatImage>)->()){
+    func createImagesFromData(endpoint:VisionEndpoint,completion:@escaping (Result<CreatImage>)->()){
        
         post(request: endpoint.request, completion: completion)
     }
     
-   public func getTags(endpoint:VisionEndpoint,completion:@escaping (Result<GetTags>)->()){
+    func getTags(endpoint:VisionEndpoint,completion:@escaping (Result<GetTags>)->()){
         
         get(request: endpoint.request, completion: completion)
     }
     
-  public  func export(endpoint:VisionEndpoint,completion:@escaping (Result<[Export]>)->()){
+    func export(endpoint:VisionEndpoint,completion:@escaping (Result<[Export]>)->()){
         get(request:endpoint.request,completion:completion)
        
     }
-   public func checkExport(endpoint:VisionEndpoint,completion:@escaping (Result<Export>)->()){
+    func checkExport(endpoint:VisionEndpoint,completion:@escaping (Result<Export>)->()){
       
       post(request: endpoint.request, completion: completion)
     }
     
-   public func deleteImages(endpoint:VisionEndpoint){
+    func deleteImages(endpoint:VisionEndpoint){
         delete(request: endpoint.request)
     }
     
-  public func getTaggedImages(endpoint:VisionEndpoint,completion:@escaping (Result<[ImageContent]>)->()){
+   func getTaggedImages(endpoint:VisionEndpoint,completion:@escaping (Result<[ImageContent]>)->()){
         
         get(request: endpoint.request, completion: completion)
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol Endpoint {
+protocol Endpoint {
     var baseURL:String { get }
     var path: String { get }
     var urlParemeters: [URLQueryItem]? { get }
@@ -18,7 +18,7 @@ public protocol Endpoint {
 
 extension Endpoint {
     
-   public var urlComponent: URLComponents {
+    var urlComponent: URLComponents {
         var urlComponent = URLComponents(string: baseURL)
         urlComponent?.path = path
         urlComponent?.queryItems = urlParemeters
@@ -27,7 +27,7 @@ extension Endpoint {
     }
     
     
-   public var request :URLRequest {
+    var request :URLRequest {
         var request = URLRequest.init(url: urlComponent.url!)
         
         request.addValue(VisionClient.share.configure.trainingKey, forHTTPHeaderField: "Training-key")
@@ -36,7 +36,7 @@ extension Endpoint {
         return request
     }
     
-   public func createBody(parameters: [String: String],
+    func createBody(parameters: [String: String],
                                  boundary: String,
                                  data: Data,
                                  mimeType: String,
@@ -64,7 +64,7 @@ extension Endpoint {
     
 }
 
-public enum VisionEndpoint:Endpoint {
+ enum VisionEndpoint:Endpoint {
 
     case queryIteration
     case creatTag(tagName:String)
@@ -80,7 +80,7 @@ public enum VisionEndpoint:Endpoint {
         return VisionClient.baseUrl
     }
     
-    public var path: String{
+     var path: String{
         switch self {
         case .queryIteration:
             return "/customvision/v1.2/Training/projects/\(VisionClient.share.configure.projectId)/iterations"
@@ -103,7 +103,7 @@ public enum VisionEndpoint:Endpoint {
         }
     }
 
-    public var urlParemeters: [URLQueryItem]?{
+     var urlParemeters: [URLQueryItem]?{
         switch self {
         case .queryIteration:
             return nil
@@ -134,7 +134,7 @@ public enum VisionEndpoint:Endpoint {
         }
 
     }
-    public var bodyData: Data?{
+     var bodyData: Data?{
         switch self {
         case .queryIteration:
             return nil

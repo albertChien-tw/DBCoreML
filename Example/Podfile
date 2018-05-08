@@ -2,7 +2,9 @@ use_frameworks!
 
 target 'DBCoreML_Example' do
   pod 'DBCoreML', :path => '../'
-
+  pod 'AssetsPickerViewController'
+  pod 'SVProgressHUD'
+  
   target 'DBCoreML_Tests' do
     inherit! :search_paths
 

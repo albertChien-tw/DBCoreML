@@ -54,7 +54,7 @@ extension APIClient{
         task.resume()
     }
     
-  public  func delete(request:URLRequest){
+   public func delete(request:URLRequest){
         
         var request = request
         request.httpMethod = "DELETE"

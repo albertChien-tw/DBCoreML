@@ -55,7 +55,7 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
     }
     
     
-    @IBAction func btnAction(_ sender: Any) {
+    @IBAction func menuAction(_ sender: Any) {
         
         let cameraAction = UIAlertAction.init(title: "相機辨識", style: .default) { (_) in
             
@@ -99,11 +99,13 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         })
         
         guard changePhotos.count > 0 else {
-            let cancelAction = UIAlertAction.init(title: "確定", style: .default, handler: nil)
-            self.showaAlert("尚未選取照片", nil, style: .alert, actions: [cancelAction])
+            let okAction = UIAlertAction.init(title: "確定", style: .default, handler: nil)
+           
+            
+            self.showaAlert("尚未選取照片", nil, style: .alert, actions: [okAction])
             return
         }
-        
+        let cancleAction = UIAlertAction.init(title: "取消", style: .cancel, handler: nil)
         let deleteAction = UIAlertAction.init(title: "Delete", style: .destructive) { (_) in
         
             changePhotos.forEach { (photo) in
@@ -116,8 +118,7 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
             })
         }
         
-        
-        showaAlert("確定刪除", nil, style: .alert, actions: [deleteAction])
+        showaAlert("確定刪除", nil, style: .alert, actions: [deleteAction,cancleAction])
         
     }
     
@@ -125,11 +126,8 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         guard  let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewCell else {
             return
         }
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.photoCell, for: indexPath) as? CollectionViewCell else {return}
-        
-//        if cell.isSelected{
-            photos?[indexPath.section].photoContent[indexPath.row].isSelected = !(photos?[indexPath.section].photoContent[indexPath.row].isSelected)!
-//        }
+
+        photos?[indexPath.section].photoContent[indexPath.row].isSelected = !(photos?[indexPath.section].photoContent[indexPath.row].isSelected)!
   
        collectionView.reloadItems(at: [indexPath])
         
