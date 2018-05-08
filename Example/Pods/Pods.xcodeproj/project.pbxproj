@@ -235,19 +235,6 @@
 			path = "../Target Support Files/FBSnapshotTestCase";
 			sourceTree = "<group>";
 		};
-		42C919EB20A1B22300174528 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				42C919F620A1B2F400174528 /* Photo.swift */,
-				42C919EC20A1B24A00174528 /* APIClient.swift */,
-				42C919EF20A1B24A00174528 /* APIModel.swift */,
-				42C919ED20A1B24A00174528 /* MLClient.swift */,
-				42C919F020A1B24B00174528 /* VisionClient.swift */,
-				42C919EE20A1B24A00174528 /* VisionEndpoint.swift */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
 		680AE91689E70C365DF16693A4D0EACD /* Pods-DBCoreML_Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,7 +307,12 @@
 		A603ADB14F962DB6250D3BB1CD4C3AA2 /* DBCoreML */ = {
 			isa = PBXGroup;
 			children = (
-				42C919EB20A1B22300174528 /* Classes */,
+				42C919F620A1B2F400174528 /* Photo.swift */,
+				42C919EC20A1B24A00174528 /* APIClient.swift */,
+				42C919EF20A1B24A00174528 /* APIModel.swift */,
+				42C919ED20A1B24A00174528 /* MLClient.swift */,
+				42C919F020A1B24B00174528 /* VisionClient.swift */,
+				42C919EE20A1B24A00174528 /* VisionEndpoint.swift */,
 				8028292B2A93A1FB41D542E125C0588D /* ReplaceMe.swift */,
 				DC7EA4A7BE9A7895EB4CC91E71B868E1 /* Pod */,
 				254D804FB7C1E25837173AE0C93E287C /* Support Files */,
