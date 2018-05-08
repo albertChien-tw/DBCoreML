@@ -15,6 +15,11 @@
 		35DD05FD595A6FE7F5A0692D12E319DC /* UIImage+Diff.m in Sources */ = {isa = PBXBuildFile; fileRef = B9CEF7D6C5E08AB80E58DABC75D882BC /* UIImage+Diff.m */; };
 		3DEE446425600F5F76EE05919B872842 /* Pods-DBCoreML_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 885EEC7A3EEAC074237E05717E457C76 /* Pods-DBCoreML_Tests-dummy.m */; };
 		421CDD701AEE0F2458A84200366CDD0F /* UIImage+Snapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B161931541BFE46DFEA2092EDDDA815 /* UIImage+Snapshot.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		42C919FF20A1B8FF00174528 /* VisionEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C919F920A1B8FF00174528 /* VisionEndpoint.swift */; };
+		42C91A0020A1B8FF00174528 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C919FA20A1B8FF00174528 /* APIClient.swift */; };
+		42C91A0120A1B8FF00174528 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C919FC20A1B8FF00174528 /* Photo.swift */; };
+		42C91A0220A1B8FF00174528 /* VisionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C919FD20A1B8FF00174528 /* VisionClient.swift */; };
+		42C91A0320A1B8FF00174528 /* MLClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C919FE20A1B8FF00174528 /* MLClient.swift */; };
 		506D761F91EC3583789A837C559972FE /* FBSnapshotTestCase-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4792533D7EE0F440EE722DA4999E845C /* FBSnapshotTestCase-dummy.m */; };
 		65C48721AFB598AEB933526F92916344 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E88A450A84E3957158B3B3459740AA /* Foundation.framework */; };
 		69DA8B003216466C60F029CBD79897F1 /* UIImage+Compare.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5E22F9517F21D3A0251F88FCAB281E /* UIImage+Compare.m */; };
@@ -69,6 +74,12 @@
 		3A8F339250A1C3C5C5C5364254007103 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3B5E22F9517F21D3A0251F88FCAB281E /* UIImage+Compare.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Compare.m"; path = "FBSnapshotTestCase/Categories/UIImage+Compare.m"; sourceTree = "<group>"; };
 		3DBFBDCC891B770A2AC9EF0FB164B751 /* UIImage+Snapshot.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Snapshot.m"; path = "FBSnapshotTestCase/Categories/UIImage+Snapshot.m"; sourceTree = "<group>"; };
+		42C919F920A1B8FF00174528 /* VisionEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionEndpoint.swift; sourceTree = "<group>"; };
+		42C919FA20A1B8FF00174528 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		42C919FB20A1B8FF00174528 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		42C919FC20A1B8FF00174528 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		42C919FD20A1B8FF00174528 /* VisionClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionClient.swift; sourceTree = "<group>"; };
+		42C919FE20A1B8FF00174528 /* MLClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLClient.swift; sourceTree = "<group>"; };
 		432938111B6FF0189EFFEDF2F845B308 /* UIImage+Compare.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+Compare.h"; path = "FBSnapshotTestCase/Categories/UIImage+Compare.h"; sourceTree = "<group>"; };
 		43DB37D8E57028F4BB03F01DD622CC39 /* Pods-DBCoreML_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DBCoreML_Tests-resources.sh"; sourceTree = "<group>"; };
 		4792533D7EE0F440EE722DA4999E845C /* FBSnapshotTestCase-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FBSnapshotTestCase-dummy.m"; sourceTree = "<group>"; };
@@ -221,6 +232,20 @@
 			path = "../Target Support Files/FBSnapshotTestCase";
 			sourceTree = "<group>";
 		};
+		42C919F820A1B8FF00174528 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				42C919F920A1B8FF00174528 /* VisionEndpoint.swift */,
+				42C919FA20A1B8FF00174528 /* APIClient.swift */,
+				42C919FB20A1B8FF00174528 /* .gitkeep */,
+				42C919FC20A1B8FF00174528 /* Photo.swift */,
+				42C919FD20A1B8FF00174528 /* VisionClient.swift */,
+				42C919FE20A1B8FF00174528 /* MLClient.swift */,
+			);
+			name = Classes;
+			path = DBCoreML/Classes;
+			sourceTree = "<group>";
+		};
 		680AE91689E70C365DF16693A4D0EACD /* Pods-DBCoreML_Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +318,7 @@
 		A603ADB14F962DB6250D3BB1CD4C3AA2 /* DBCoreML */ = {
 			isa = PBXGroup;
 			children = (
+				42C919F820A1B8FF00174528 /* Classes */,
 				DC7EA4A7BE9A7895EB4CC91E71B868E1 /* Pod */,
 				254D804FB7C1E25837173AE0C93E287C /* Support Files */,
 			);
@@ -517,7 +543,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42C91A0220A1B8FF00174528 /* VisionClient.swift in Sources */,
+				42C91A0320A1B8FF00174528 /* MLClient.swift in Sources */,
+				42C91A0120A1B8FF00174528 /* Photo.swift in Sources */,
+				42C919FF20A1B8FF00174528 /* VisionEndpoint.swift in Sources */,
 				D00BE9057955FE231A7E2F6442F02AC0 /* DBCoreML-dummy.m in Sources */,
+				42C91A0020A1B8FF00174528 /* APIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
