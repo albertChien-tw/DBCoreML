@@ -9,14 +9,14 @@
 
 import Foundation
 
-enum Result<T>{
+public enum Result<T>{
     case success(T)
     case failure(Error)
 }
-enum MLError:Error{
+public enum MLError:Error{
     case unknown, badResponse, jsonDecoder ,updateModelError
 }
-protocol APIClient {
+public protocol APIClient {
     var session :URLSession { get }
     func get<T:Codable>(request:URLRequest,completion:@escaping (Result<T>)->())
     func post<T:Codable>(request:URLRequest,completion:@escaping (Result<T>)->())
@@ -25,11 +25,11 @@ protocol APIClient {
 
 extension APIClient{
     
-    var session:URLSession{
+   public var session:URLSession{
         return URLSession.shared
     }
     
-    func get<T:Codable>(request:URLRequest,completion:@escaping (Result<T>)->()){
+    public func get<T:Codable>(request:URLRequest,completion:@escaping (Result<T>)->()){
 
         let task = session.dataTask(with: request) { (data, response, error) in
             guard  error == nil else{
@@ -54,7 +54,7 @@ extension APIClient{
         task.resume()
     }
     
-    func delete(request:URLRequest){
+  public  func delete(request:URLRequest){
         
         var request = request
         request.httpMethod = "DELETE"
@@ -65,7 +65,7 @@ extension APIClient{
         task.resume()
     }
     
-    func post<T:Codable>(request:URLRequest,completion:@escaping (Result<T>)->()){
+   public func post<T:Codable>(request:URLRequest,completion:@escaping (Result<T>)->()){
         var request = request
         request.httpMethod = "POST"
 
@@ -90,7 +90,7 @@ extension APIClient{
         task.resume()
     }
     
-    func download(url:URL,completion:@escaping (Result<URL>)->()){
+   public func download(url:URL,completion:@escaping (Result<URL>)->()){
         
         let request = URLRequest(url: url)
         let task = session.downloadTask(with: request) { (url, response, error) in

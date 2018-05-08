@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol Endpoint {
+public protocol Endpoint {
     var baseURL:String { get }
     var path: String { get }
     var urlParemeters: [URLQueryItem]? { get }
@@ -18,7 +18,7 @@ protocol Endpoint {
 
 extension Endpoint {
     
-    var urlComponent: URLComponents {
+   public var urlComponent: URLComponents {
         var urlComponent = URLComponents(string: baseURL)
         urlComponent?.path = path
         urlComponent?.queryItems = urlParemeters
@@ -27,7 +27,7 @@ extension Endpoint {
     }
     
     
-    var request :URLRequest {
+   public var request :URLRequest {
         var request = URLRequest.init(url: urlComponent.url!)
         
         request.addValue(VisionClient.share.configure.trainingKey, forHTTPHeaderField: "Training-key")
@@ -36,7 +36,7 @@ extension Endpoint {
         return request
     }
     
-    func createBody(parameters: [String: String],
+   public func createBody(parameters: [String: String],
                                  boundary: String,
                                  data: Data,
                                  mimeType: String,
@@ -64,7 +64,7 @@ extension Endpoint {
     
 }
 
-enum VisionEndpoint:Endpoint {
+public enum VisionEndpoint:Endpoint {
 
     case queryIteration
     case creatTag(tagName:String)
@@ -76,11 +76,11 @@ enum VisionEndpoint:Endpoint {
     case getUnTaggedImage(take:Int)
     case deleteImages(imageIds:[PhotoContent])
     
-    var baseURL:String{
+    public var baseURL:String{
         return VisionClient.baseUrl
     }
     
-    var path: String{
+    public var path: String{
         switch self {
         case .queryIteration:
             return "/customvision/v1.2/Training/projects/\(VisionClient.share.configure.projectId)/iterations"
@@ -103,7 +103,7 @@ enum VisionEndpoint:Endpoint {
         }
     }
 
-    var urlParemeters: [URLQueryItem]?{
+    public var urlParemeters: [URLQueryItem]?{
         switch self {
         case .queryIteration:
             return nil
@@ -134,7 +134,7 @@ enum VisionEndpoint:Endpoint {
         }
 
     }
-    var bodyData: Data?{
+    public var bodyData: Data?{
         switch self {
         case .queryIteration:
             return nil

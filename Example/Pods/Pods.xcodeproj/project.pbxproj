@@ -20,6 +20,7 @@
 		42C91A0120A1B8FF00174528 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C919FC20A1B8FF00174528 /* Photo.swift */; };
 		42C91A0220A1B8FF00174528 /* VisionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C919FD20A1B8FF00174528 /* VisionClient.swift */; };
 		42C91A0320A1B8FF00174528 /* MLClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C919FE20A1B8FF00174528 /* MLClient.swift */; };
+		42C91A0720A1B9A200174528 /* APIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C91A0620A1B9A200174528 /* APIModel.swift */; };
 		506D761F91EC3583789A837C559972FE /* FBSnapshotTestCase-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4792533D7EE0F440EE722DA4999E845C /* FBSnapshotTestCase-dummy.m */; };
 		65C48721AFB598AEB933526F92916344 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E88A450A84E3957158B3B3459740AA /* Foundation.framework */; };
 		69DA8B003216466C60F029CBD79897F1 /* UIImage+Compare.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B5E22F9517F21D3A0251F88FCAB281E /* UIImage+Compare.m */; };
@@ -80,6 +81,7 @@
 		42C919FC20A1B8FF00174528 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		42C919FD20A1B8FF00174528 /* VisionClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionClient.swift; sourceTree = "<group>"; };
 		42C919FE20A1B8FF00174528 /* MLClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLClient.swift; sourceTree = "<group>"; };
+		42C91A0620A1B9A200174528 /* APIModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIModel.swift; sourceTree = "<group>"; };
 		432938111B6FF0189EFFEDF2F845B308 /* UIImage+Compare.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+Compare.h"; path = "FBSnapshotTestCase/Categories/UIImage+Compare.h"; sourceTree = "<group>"; };
 		43DB37D8E57028F4BB03F01DD622CC39 /* Pods-DBCoreML_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DBCoreML_Tests-resources.sh"; sourceTree = "<group>"; };
 		4792533D7EE0F440EE722DA4999E845C /* FBSnapshotTestCase-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FBSnapshotTestCase-dummy.m"; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 		42C919F820A1B8FF00174528 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				42C91A0620A1B9A200174528 /* APIModel.swift */,
 				42C919F920A1B8FF00174528 /* VisionEndpoint.swift */,
 				42C919FA20A1B8FF00174528 /* APIClient.swift */,
 				42C919FB20A1B8FF00174528 /* .gitkeep */,
@@ -543,6 +546,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42C91A0720A1B9A200174528 /* APIModel.swift in Sources */,
 				42C91A0220A1B8FF00174528 /* VisionClient.swift in Sources */,
 				42C91A0320A1B8FF00174528 /* MLClient.swift in Sources */,
 				42C91A0120A1B8FF00174528 /* Photo.swift in Sources */,

@@ -30,7 +30,7 @@ TODO: Add long description of the pod here.
   s.summary = 'DBCoreML'
   s.ios.deployment_target = '11.0'
 
-  s.source_files = 'DBCoreML/Classes/*'
+  s.source_files = 'DBCoreML/Classes/**/*'
   
   # s.resource_bundles = {
   #   'DBCoreML' => ['DBCoreML/Assets/*.png']

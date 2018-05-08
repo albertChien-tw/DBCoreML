@@ -10,7 +10,7 @@ import Foundation
 import Vision
 import CoreML
 
-protocol MLClientDelegate :class{
+public protocol MLClientDelegate :class{
     
     func mlClient(_ mlClient:MLClient,didUpdateModel model:VNCoreMLModel,error:Error?)
     func mlClient(_ mlClient:MLClient,didUpdateiteration iteration :[GetIterations],error:Error?)
@@ -20,37 +20,37 @@ protocol MLClientDelegate :class{
 }
 
 
-enum VisionStatus :String{
+public enum VisionStatus :String{
     case queryIteration
     case updateModel
     case exportModel
     case initVision
 }
 
-enum UserDefaultKey:String{
+public enum UserDefaultKey:String{
     case iterationId
     case directory
     case modelName
     case compiledUrl
 }
 
-enum IsTaged {
+public enum IsTaged {
     case tagged,untagged
 }
 
-class MLClient{
+public class MLClient{
     
     //MARK : - Property
     private let client:APIClient
-    weak var  delegate : MLClientDelegate?
-    var storeDirectory = FileManager.SearchPathDirectory.documentDirectory
+   public weak var  delegate : MLClientDelegate?
+   public var storeDirectory = FileManager.SearchPathDirectory.documentDirectory
     
-    init(client:APIClient,delegate:MLClientDelegate) {
+   public init(client:APIClient,delegate:MLClientDelegate) {
         self.client = client
         self.delegate = delegate
     }
     
-    func queryIteration(completion:@escaping (String?)->()){
+  public func queryIteration(completion:@escaping (String?)->()){
 
         if let client = client as? VisionClient{
             let endpoint = VisionEndpoint.queryIteration
@@ -74,7 +74,7 @@ class MLClient{
         }
     }
     
-    func setUpModel(directory:FileManager.SearchPathDirectory,modelName:String,localModel:MLModel){
+   public func setUpModel(directory:FileManager.SearchPathDirectory,modelName:String,localModel:MLModel){
         delegate?.mlClient(self, visionDidChangeState: .initVision)
         storeDirectory = directory
         
@@ -109,7 +109,7 @@ class MLClient{
         
     }
     
-    func creatTag(tagName:String,completion:@escaping (Content?,Error?)->()){
+  public  func creatTag(tagName:String,completion:@escaping (Content?,Error?)->()){
         
         if let client = client as? VisionClient {
             let endpoint = VisionEndpoint.creatTag(tagName: tagName)
@@ -126,7 +126,7 @@ class MLClient{
 
     }
     
-    func getTags(completion:@escaping (GetTags?)->()){
+   public func getTags(completion:@escaping (GetTags?)->()){
         if let client = client as? VisionClient {
             let endpoint = VisionEndpoint.getTags
             client.getTags(endpoint: endpoint) { (result) in
@@ -141,7 +141,7 @@ class MLClient{
         }
     }
     
-    func queryImage(istaged:IsTaged,completion:@escaping ([Photo],Error?)->()){
+    public func queryImage(istaged:IsTaged,completion:@escaping ([Photo],Error?)->()){
         var photos :[Photo] = []
         getImages(istaged: istaged) { (result,content, error) in
             guard error == nil,let content = content,let result = result else {return}
@@ -178,7 +178,7 @@ class MLClient{
             completion(photos,error)
         }
     }
-    func deleteImages(images:[PhotoContent]){
+   public func deleteImages(images:[PhotoContent]){
         if let client = self.client as? VisionClient {
             
             let endpoint = VisionEndpoint.deleteImages(imageIds: images)
@@ -217,7 +217,7 @@ class MLClient{
         }
     }
     
-    func updateModel(iterationId:String?,callBack:@escaping (URL?,Error?)->()){
+   public func updateModel(iterationId:String?,callBack:@escaping (URL?,Error?)->()){
         delegate?.mlClient(self, visionDidChangeState: .updateModel)
         
         let paths = FileManager.default.urls(for: self.storeDirectory, in: .userDomainMask)
