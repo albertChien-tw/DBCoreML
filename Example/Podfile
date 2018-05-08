@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'DBCoreML_Example' do
+  pod 'DBCoreML', :path => '../'
+
+  target 'DBCoreML_Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase' , '~> 2.1.4'
+  end
+end
