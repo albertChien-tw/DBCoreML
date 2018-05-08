@@ -27,10 +27,10 @@ TODO: Add long description of the pod here.
   s.author           = { 'dabechien' => 'remix3966@gmail.com' }
   s.source           = { :git => 'https://github.com/dabechien/DBCoreML.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.summary = 'DBCoreML'
+  s.ios.deployment_target = '11.0'
 
-  s.ios.deployment_target = '8.0'
-
-  s.source_files = 'DBCoreML/Classes/**/*'
+  s.source_files = 'DBCoreML/Classes/*'
   
   # s.resource_bundles = {
   #   'DBCoreML' => ['DBCoreML/Assets/*.png']

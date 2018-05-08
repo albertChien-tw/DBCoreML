@@ -1,0 +1,6 @@
+framework module DBCoreML {
+  umbrella header "DBCoreML-umbrella.h"
+
+  export *
+  module * { export * }
+}
