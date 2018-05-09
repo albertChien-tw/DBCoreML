@@ -43,8 +43,17 @@ public class VisionClient :APIClient{
     }
     
     func createImagesFromData(endpoint:VisionEndpoint,completion:@escaping (Result<CreatImage>)->()){
-       
-        post(request: endpoint.request, completion: completion)
+       var request = endpoint.request
+        request.httpBody = endpoint.bodyData
+        switch endpoint {
+        case .createImages(let images, let tags,let boundary):
+            request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            post(request: request, completion: completion)
+        default:
+            print("Error")
+        }
+        
+        
     }
     
     func getTags(endpoint:VisionEndpoint,completion:@escaping (Result<GetTags>)->()){

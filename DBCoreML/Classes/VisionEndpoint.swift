@@ -12,7 +12,7 @@ protocol Endpoint {
     var baseURL:String { get }
     var path: String { get }
     var urlParemeters: [URLQueryItem]? { get }
-    //var bodyData:Data? { get }
+    var bodyData:Data? { get }
    
 }
 
@@ -29,11 +29,7 @@ extension Endpoint {
     
     var request :URLRequest {
         var request = URLRequest.init(url: urlComponent.url!)
-        
         request.addValue(VisionClient.share.configure.trainingKey, forHTTPHeaderField: "Training-key")
-        
-        //request.httpBody = bodyData
-        print(request.value(forHTTPHeaderField: "Training-key"))
         return request
     }
     
@@ -70,7 +66,7 @@ extension Endpoint {
     case queryIteration
     case creatTag(tagName:String)
     case getTags
-    case createImages(images:[UIImage],tagIds:[String])
+    case createImages(images:[UIImage],tagIds:[String],boundary:String)
     case export(iterationId:String)
     case checkCanExport(iterationId:String)
     case getTaggedImage(take:Int)
@@ -116,25 +112,11 @@ extension Endpoint {
             return nil
         case .creatTag(let tagName):
             return [URLQueryItem.init(name: "name", value: tagName)]
-        case .createImages(let images,let tagIds):
+        case .createImages(_,let tagIds,_):
             var queryItems: [URLQueryItem] = []
-            
-            for tag in tagIds{
+            tagIds.forEach { (tag) in
                 queryItems.append(URLQueryItem.init(name: "tagIds", value: tag))
             }
-//            let boundary = "Boundary-\(UUID().uuidString)"
-//            var parameter = ["Content-Type":"multipart/form-data; boundary=\(boundary)"]
-//
-//            var bodyData = Data()
-//
-//            for (index,item) in images.enumerated(){
-//                bodyData.append(createBody(parameters: parameter,
-//                                           boundary: boundary,
-//                                           data: UIImageJPEGRepresentation(item, 0.7)!,
-//                                           mimeType: "image/jpg",
-//                                           filename: "hello\(index).jpg"))
-//            }
-//            request.httpBody = bodyData
             return queryItems
         case .export:
             return nil
@@ -164,10 +146,10 @@ extension Endpoint {
             return nil
         case .creatTag:
             return nil
-        case .createImages(let images,_):
-            let boundary = "Boundary-\(UUID().uuidString)"
+        case .createImages(let images,_,let boundary):
+            //let boundary = "Boundary-\(UUID().uuidString)"
             var parameter = ["Content-Type":"multipart/form-data; boundary=\(boundary)"]
-
+                parameter.updateValue("\(VisionClient.share.configure.trainingKey)", forKey: "Training-key")
             var bodyData = Data()
 
             for (index,item) in images.enumerated(){
@@ -178,7 +160,7 @@ extension Endpoint {
                                                 mimeType: "image/jpg",
                                                 filename: "hello\(index).jpg"))
             }
-           
+            
             return bodyData
         case .export:
             return nil

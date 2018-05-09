@@ -36,7 +36,6 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         super.viewDidLoad()
         collectionView.delegate = self
         collectionView.dataSource = self
-        
     }
     
     var photos:[Photo]? = []{
@@ -47,15 +46,15 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        queryImage()
+    }
+    
+    func queryImage(){
         mlClient.queryImage(istaged: .tagged) { (photos, error) in
             guard error == nil else{return}
             self.photos = photos
         }
-        
     }
-    
-    
     @IBAction func menuAction(_ sender: Any) {
         
         let cameraAction = UIAlertAction.init(title: "相機辨識", style: .default) { (_) in
@@ -64,19 +63,21 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         }
         
         let uploadAction = UIAlertAction.init(title: "上傳照片", style: .default) { (_) in
-            var tagArrs:[String] = []
-            self.mlClient.getTagsAndGetId(tagNames: ["Lanyang Museum"], completion: { (tags) in
-                tagArrs = tags
-            })
-            
-            self.mlClient.createImagesFromData(images: self.images, tagIds: tagArrs, completion: { (success) in
-                print(success)
-                self.mlClient.trainProject(completion: { (success) in
-                    if success{
-                        self.mlClient.setUpModel(directory: .documentDirectory, modelName: "Landmark", localModel: Landmark().model)
-                    }
+           
+            self.mlClient.getTagsAndGetId(tagNames: ["Lanyang Museum","Yilan Museum"], completion: { (tags) in
+             
+                self.mlClient.createImagesFromData(images: self.images, tagIds: tags, completion: { (success) in
+                        print(success)
+                        self.mlClient.trainProject(completion: { (success) in
+                            if success{
+                                self.mlClient.setUpModel(directory: .documentDirectory, modelName: "Landmark", localModel: Landmark().model)
+                                    self.queryImage()
+                            }
+                        })
                 })
             })
+            
+            
         }
         let cancelAction = UIAlertAction.init(title: "取消", style: .cancel, handler: nil)
         

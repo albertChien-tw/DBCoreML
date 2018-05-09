@@ -279,8 +279,8 @@ public class MLClient{
     
     public func createImagesFromData(images:[UIImage],tagIds:[String],completion:@escaping (Bool)->()){
         if let client = self.client as? VisionClient {
-            
-            let endpoint = VisionEndpoint.createImages(images: images, tagIds: tagIds)
+            let boundary = "Boundary-\(UUID().uuidString)"
+            let endpoint = VisionEndpoint.createImages(images: images, tagIds: tagIds,boundary: boundary)
             client.createImagesFromData(endpoint: endpoint) { (result) in
                 switch result{
                 case .success(let value):

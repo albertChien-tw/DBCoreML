@@ -78,7 +78,7 @@ extension APIClient{
 //                completion(.failure(APIError.badResponse))
 //                return
 //            }
-            print(String.init(data: data!, encoding: String.Encoding.utf8))
+           
             guard let value = try? JSONDecoder().decode(T.self, from: data!) else{
                 completion(.failure(MLError.jsonDecoder))
                 return

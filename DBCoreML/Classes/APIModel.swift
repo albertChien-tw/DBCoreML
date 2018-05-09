@@ -10,13 +10,13 @@ import UIKit
 
 public class GetIterations: Codable {
     
-    public var id: String
-    public var name:String
-    public var status:String
-    public var created:String
-    public var lastModified:String
+    public var id: String?
+    public var name:String?
+    public var status:String?
+    public var created:String?
+    public var lastModified:String?
     public var trainedAt:String?
-    public var isDefault:Bool
+    public var isDefault:Bool?
     
     public enum CodingKeys : String, CodingKey {
         case id = "Id"
