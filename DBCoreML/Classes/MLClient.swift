@@ -15,7 +15,7 @@ public protocol MLClientDelegate :class{
     func mlClient(_ mlClient:MLClient,didUpdateModel model:VNCoreMLModel,error:Error?)
     func mlClient(_ mlClient:MLClient,didUpdateiteration iteration :[GetIterations],error:Error?)
     func mlClient(_ mlClient:MLClient,didUpdateTags tags :GetTags,error:Error?)
- 
+    
     func mlClient(_ mlClient:MLClient,visionDidChangeState state :VisionStatus)
 }
 
@@ -42,16 +42,16 @@ public class MLClient{
     
     //MARK : - Property
     private let client:APIClient
-   public weak var  delegate : MLClientDelegate?
-   public var storeDirectory = FileManager.SearchPathDirectory.documentDirectory
+    public weak var  delegate : MLClientDelegate?
+    public var storeDirectory = FileManager.SearchPathDirectory.documentDirectory
     
-   public init(client:APIClient,delegate:MLClientDelegate) {
+    public init(client:APIClient,delegate:MLClientDelegate) {
         self.client = client
         self.delegate = delegate
     }
     
-  public func queryIteration(completion:@escaping (String?)->()){
-
+    public func queryIteration(completion:@escaping (String?)->()){
+        
         if let client = client as? VisionClient{
             let endpoint = VisionEndpoint.queryIteration
             
@@ -62,7 +62,7 @@ public class MLClient{
                     let lastTime = completed.sorted(by: { (date1, date2) -> Bool in
                         return date1.trainedAt!.compare(date2.trainedAt!) == ComparisonResult.orderedDescending
                     })
-
+                    
                     self.delegate?.mlClient(self, didUpdateiteration: value, error: nil)
                     completion(lastTime.first!.id)
                 case .failure(let error):
@@ -74,7 +74,7 @@ public class MLClient{
         }
     }
     
-   public func setUpModel(directory:FileManager.SearchPathDirectory,modelName:String,localModel:MLModel){
+    public func setUpModel(directory:FileManager.SearchPathDirectory,modelName:String,localModel:MLModel){
         delegate?.mlClient(self, visionDidChangeState: .initVision)
         storeDirectory = directory
         
@@ -84,7 +84,7 @@ public class MLClient{
             guard let iteration = iteration else {
                 
                 self.updateModel(iterationId: nil, callBack: { (url,error) in
-
+                    
                     self.delegate?.mlClient(self, didUpdateModel: self.compileModel(url: url, compileUrl: nil, localModel: localModel), error: MLError.updateModelError)
                     
                 })
@@ -100,16 +100,44 @@ public class MLClient{
                 UserDefaults.standard.set(iteration, forKey: UserDefaultKey.iterationId.rawValue)
                 
                 self.updateModel(iterationId: iteration, callBack: { (url,error) in
-                   
+                    
                     self.delegate?.mlClient(self, didUpdateModel: self.compileModel(url: url, compileUrl: nil, localModel: localModel), error: nil)
-    
+                    
                 })
             }
         }
         
     }
     
-  public  func creatTag(tagName:String,completion:@escaping (Content?,Error?)->()){
+    public func trainProject(completion:@escaping (Bool)->()){
+        if let client = client as? VisionClient{
+            let endPoint = VisionEndpoint.trainProject
+            client.trainProject(endpoint: endPoint) { (result) in
+                switch result{
+                case .success(let value):
+                    completion(true)
+                case .failure(let error):
+                    completion(false)
+                }
+            }
+        }
+    }
+    
+    public func getTagsAndGetId(tagNames:[String],completion:@escaping ([String])->()){
+        var tagIds = [String]()
+        
+        tagNames.forEach { (tag) in
+            creatTag(tagName: tag, completion: { (tagContent, error) in
+                guard error == nil else{return}
+                tagIds.append((tagContent?.id)!)
+                if tagIds.count == tagNames.count{
+                    completion(tagIds)
+                }
+            })
+        }
+        
+    }
+    public  func creatTag(tagName:String,completion:@escaping (Content?,Error?)->()){
         
         if let client = client as? VisionClient {
             let endpoint = VisionEndpoint.creatTag(tagName: tagName)
@@ -123,10 +151,10 @@ public class MLClient{
                 }
             })
         }
-
+        
     }
     
-   public func getTags(completion:@escaping (GetTags?)->()){
+    public func getTags(completion:@escaping (GetTags?)->()){
         if let client = client as? VisionClient {
             let endpoint = VisionEndpoint.getTags
             client.getTags(endpoint: endpoint) { (result) in
@@ -153,7 +181,7 @@ public class MLClient{
                     var tempPhoto:Photo? = nil
                     
                     if let photo = photos.filter({($0.title == tagId)}).first{
-             
+                        
                         let index = photos.index(where: {($0.title == tagId)})
                         photos.remove(at: index!)
                         tempPhoto = photo
@@ -178,7 +206,7 @@ public class MLClient{
             completion(photos,error)
         }
     }
-   public func deleteImages(images:[PhotoContent]){
+    public func deleteImages(images:[PhotoContent]){
         if let client = self.client as? VisionClient {
             
             let endpoint = VisionEndpoint.deleteImages(imageIds: images)
@@ -195,12 +223,12 @@ public class MLClient{
             self.delegate?.mlClient(self, didUpdateTags: tags, error: nil)
             
             switch istaged{
-                case .tagged:
-                    take = tags.totalTaggedImages!
-                case .untagged:
-                    take = tags.totalUntaggedImages!
+            case .tagged:
+                take = tags.totalTaggedImages!
+            case .untagged:
+                take = tags.totalUntaggedImages!
             }
-           
+            
             if let client = self.client as? VisionClient {
                 
                 let endpoint = VisionEndpoint.getTaggedImage(take: take)
@@ -217,7 +245,7 @@ public class MLClient{
         }
     }
     
-   public func updateModel(iterationId:String?,callBack:@escaping (URL?,Error?)->()){
+    public func updateModel(iterationId:String?,callBack:@escaping (URL?,Error?)->()){
         delegate?.mlClient(self, visionDidChangeState: .updateModel)
         
         let paths = FileManager.default.urls(for: self.storeDirectory, in: .userDomainMask)
@@ -249,6 +277,22 @@ public class MLClient{
         }
     }
     
+    public func createImagesFromData(images:[UIImage],tagIds:[String],completion:@escaping (Bool)->()){
+        if let client = self.client as? VisionClient {
+            
+            let endpoint = VisionEndpoint.createImages(images: images, tagIds: tagIds)
+            client.createImagesFromData(endpoint: endpoint) { (result) in
+                switch result{
+                case .success(let value):
+                    completion(value.isBatchSuccessful!)
+                case .failure(let error):
+                    completion(false)
+                }
+            }
+        }
+        
+    }
+    
     private func exportModel(iterationId:String,callBack:@escaping (String?,Error?)->()){
         delegate?.mlClient(self, visionDidChangeState: .exportModel)
         
@@ -271,13 +315,13 @@ public class MLClient{
                         callBack(nil,error)
                     }
                 })
-               
+                
             }
         })
     }
     
     private func checkCanExport(iterationId:String,completion:((Error?)->())?){
-      
+        
         if let client = client as? VisionClient{
             let endpoint = VisionEndpoint.checkCanExport(iterationId: iterationId)
             client.checkExport(endpoint: endpoint, completion: { (result) in
@@ -286,11 +330,11 @@ public class MLClient{
                     completion?(nil)
                 case .failure(let error):
                     completion?(error)
-                     print(error.localizedDescription)
+                    print(error.localizedDescription)
                 }
             })
         }
-       
+        
     }
     
     private func compileModel(url:URL?,compileUrl:String?,localModel:MLModel)->VNCoreMLModel{

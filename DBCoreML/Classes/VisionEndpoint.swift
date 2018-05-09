@@ -12,7 +12,7 @@ protocol Endpoint {
     var baseURL:String { get }
     var path: String { get }
     var urlParemeters: [URLQueryItem]? { get }
-    var bodyData:Data? { get }
+    //var bodyData:Data? { get }
    
 }
 
@@ -31,7 +31,8 @@ extension Endpoint {
         var request = URLRequest.init(url: urlComponent.url!)
         
         request.addValue(VisionClient.share.configure.trainingKey, forHTTPHeaderField: "Training-key")
-        request.httpBody = bodyData
+        
+        //request.httpBody = bodyData
         print(request.value(forHTTPHeaderField: "Training-key"))
         return request
     }
@@ -75,6 +76,7 @@ extension Endpoint {
     case getTaggedImage(take:Int)
     case getUnTaggedImage(take:Int)
     case deleteImages(imageIds:[PhotoContent])
+    case trainProject
     
     public var baseURL:String{
         return VisionClient.baseUrl
@@ -100,6 +102,9 @@ extension Endpoint {
             return "/customvision/v1.2/Training/projects/\(VisionClient.share.configure.projectId)/images/entagged"
         case .deleteImages(_):
             return "/customvision/v1.2/Training/projects/\(VisionClient.share.configure.projectId)/images"
+        case .trainProject:
+            return "/customvision/v1.2/Training/projects/\(VisionClient.share.configure.projectId)/train"
+            
         }
     }
 
@@ -111,11 +116,25 @@ extension Endpoint {
             return nil
         case .creatTag(let tagName):
             return [URLQueryItem.init(name: "name", value: tagName)]
-        case .createImages(_,let tagIds):
+        case .createImages(let images,let tagIds):
             var queryItems: [URLQueryItem] = []
+            
             for tag in tagIds{
                 queryItems.append(URLQueryItem.init(name: "tagIds", value: tag))
             }
+//            let boundary = "Boundary-\(UUID().uuidString)"
+//            var parameter = ["Content-Type":"multipart/form-data; boundary=\(boundary)"]
+//
+//            var bodyData = Data()
+//
+//            for (index,item) in images.enumerated(){
+//                bodyData.append(createBody(parameters: parameter,
+//                                           boundary: boundary,
+//                                           data: UIImageJPEGRepresentation(item, 0.7)!,
+//                                           mimeType: "image/jpg",
+//                                           filename: "hello\(index).jpg"))
+//            }
+//            request.httpBody = bodyData
             return queryItems
         case .export:
             return nil
@@ -131,7 +150,10 @@ extension Endpoint {
                 item.append(URLQueryItem.init(name: "imageIds", value: image.id))
             }
             return item
+        case .trainProject:
+            return []
         }
+        
 
     }
      var bodyData: Data?{
@@ -144,16 +166,19 @@ extension Endpoint {
             return nil
         case .createImages(let images,_):
             let boundary = "Boundary-\(UUID().uuidString)"
-            let parameter = ["Content-Type":"multipart/form-data; boundary=\(boundary)"]
+            var parameter = ["Content-Type":"multipart/form-data; boundary=\(boundary)"]
+
             var bodyData = Data()
 
             for (index,item) in images.enumerated(){
+               
                 bodyData.append(createBody(parameters: parameter,
                                                 boundary: boundary,
                                                 data: UIImageJPEGRepresentation(item, 0.7)!,
                                                 mimeType: "image/jpg",
                                                 filename: "hello\(index).jpg"))
             }
+           
             return bodyData
         case .export:
             return nil
@@ -164,6 +189,8 @@ extension Endpoint {
         case .getUnTaggedImage(_):
             return nil
         case .deleteImages(_):
+            return nil
+        case .trainProject:
             return nil
         }
         

@@ -30,12 +30,13 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         static let photoCell = "Cell"
         static let cameraSegue = "gotoCamera"
     }
-    
+    var images:[UIImage] = [#imageLiteral(resourceName: "image1"),#imageLiteral(resourceName: "image2"),#imageLiteral(resourceName: "image3"),#imageLiteral(resourceName: "image4"),#imageLiteral(resourceName: "image5"),#imageLiteral(resourceName: "image6"),#imageLiteral(resourceName: "image7"),#imageLiteral(resourceName: "image8"),#imageLiteral(resourceName: "image9"),#imageLiteral(resourceName: "image10"),#imageLiteral(resourceName: "image11")]
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
         collectionView.dataSource = self
+        
     }
     
     var photos:[Photo]? = []{
@@ -43,7 +44,7 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
             self.collectionView.reloadData()
         }
     }
-  
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -51,7 +52,7 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
             guard error == nil else{return}
             self.photos = photos
         }
-    
+        
     }
     
     
@@ -61,19 +62,31 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
             
             self.mlClient.setUpModel(directory: self.mlClient.storeDirectory, modelName: "Landmark", localModel: Landmark().model)
         }
-
+        
         let uploadAction = UIAlertAction.init(title: "上傳照片", style: .default) { (_) in
+            var tagArrs:[String] = []
+            self.mlClient.getTagsAndGetId(tagNames: ["Lanyang Museum"], completion: { (tags) in
+                tagArrs = tags
+            })
             
+            self.mlClient.createImagesFromData(images: self.images, tagIds: tagArrs, completion: { (success) in
+                print(success)
+                self.mlClient.trainProject(completion: { (success) in
+                    if success{
+                        self.mlClient.setUpModel(directory: .documentDirectory, modelName: "Landmark", localModel: Landmark().model)
+                    }
+                })
+            })
         }
         let cancelAction = UIAlertAction.init(title: "取消", style: .cancel, handler: nil)
         
         showaAlert(nil, nil, style: .actionSheet, actions: [cameraAction,uploadAction,cancelAction])
         
-       
+        
     }
     
     func showaAlert(_ title:String?,_ message:String? ,style:UIAlertControllerStyle,actions:[UIAlertAction]){
-       
+        
         let alertVC = UIAlertController.init(title: title, message: message, preferredStyle: style)
         actions.forEach { (action) in
             alertVC.addAction(action)
@@ -86,13 +99,13 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         
         photos?.forEach({ (photo) in
             var photos:[PhotoContent] = []
-           
+            
             guard  photo.photoContent.filter({($0.isSelected)}).count > 0 else {return}
             
-             photo.photoContent.filter({($0.isSelected)}).forEach({ (content) in
-                 photos.append(content)
+            photo.photoContent.filter({($0.isSelected)}).forEach({ (content) in
+                photos.append(content)
             })
-           
+            
             var tempPhoto = photo
             tempPhoto.photoContent = photos
             changePhotos.append(tempPhoto)
@@ -100,16 +113,16 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         
         guard changePhotos.count > 0 else {
             let okAction = UIAlertAction.init(title: "確定", style: .default, handler: nil)
-           
+            
             
             self.showaAlert("尚未選取照片", nil, style: .alert, actions: [okAction])
             return
         }
         let cancleAction = UIAlertAction.init(title: "取消", style: .cancel, handler: nil)
         let deleteAction = UIAlertAction.init(title: "Delete", style: .destructive) { (_) in
-        
+            
             changePhotos.forEach { (photo) in
-               self.mlClient.deleteImages(images: photo.photoContent)
+                self.mlClient.deleteImages(images: photo.photoContent)
             }
             
             self.mlClient.queryImage(istaged: .tagged, completion: { (photos, error) in
@@ -126,10 +139,10 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         guard  let cell = collectionView.cellForItem(at: indexPath) as? CollectionViewCell else {
             return
         }
-
+        
         photos?[indexPath.section].photoContent[indexPath.row].isSelected = !(photos?[indexPath.section].photoContent[indexPath.row].isSelected)!
-  
-       collectionView.reloadItems(at: [indexPath])
+        
+        collectionView.reloadItems(at: [indexPath])
         
     }
     
@@ -141,7 +154,7 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
         
         cell.layer.borderColor = index.isSelected ? #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1) : #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         cell.layer.borderWidth = index.isSelected ? 5 : 0
-      
+        
         cell.image.loadImageUsingUrlString(index.photoURL)
         return cell
     }
@@ -179,7 +192,7 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+        
         guard let cameraVC = segue.destination as? CameraVC,let model = sender as? VNCoreMLModel else {
             return
         }
@@ -190,7 +203,7 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
 extension ViewController:MLClientDelegate{
     
     func mlClient(_ mlClient: MLClient, didUpdateTags tags: GetTags, error: Error?) {
-       
+        
     }
     
     func mlClient(_ mlClient: MLClient, didUpdateModel model: VNCoreMLModel, error: Error?) {

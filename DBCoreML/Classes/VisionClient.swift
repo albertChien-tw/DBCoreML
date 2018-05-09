@@ -69,5 +69,10 @@ public class VisionClient :APIClient{
         
         get(request: endpoint.request, completion: completion)
     }
+    
+    func trainProject(endpoint:VisionEndpoint,completion:@escaping (Result<GetIterations>)->()){
+        
+        post(request: endpoint.request, completion: completion)
+    }
 }
 

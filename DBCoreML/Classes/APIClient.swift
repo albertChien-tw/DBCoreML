@@ -68,7 +68,7 @@ extension APIClient{
    public func post<T:Codable>(request:URLRequest,completion:@escaping (Result<T>)->()){
         var request = request
         request.httpMethod = "POST"
-
+    
         let task = session.dataTask(with: request) { (data, response, error) in
             guard  error == nil else{
                 completion(.failure(error!))
@@ -78,6 +78,7 @@ extension APIClient{
 //                completion(.failure(APIError.badResponse))
 //                return
 //            }
+            print(String.init(data: data!, encoding: String.Encoding.utf8))
             guard let value = try? JSONDecoder().decode(T.self, from: data!) else{
                 completion(.failure(MLError.jsonDecoder))
                 return
@@ -127,3 +128,4 @@ extension APIClient{
         task.resume()
     }
 }
+

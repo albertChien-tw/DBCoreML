@@ -109,7 +109,7 @@ public struct ImageContent:Codable {
     public let tags:[Tag]?
     public  let predictions:[Prediction]?
     
-    public  enum CodingKeys : String, CodingKey {
+    public enum CodingKeys : String, CodingKey {
         
         case id = "Id"
         case created = "Created"
@@ -123,14 +123,15 @@ public struct ImageContent:Codable {
 }
 
 public class CreatImage:Codable{
+    
     public struct Image :Codable{
         public let sourceUrl:String?
-        public let image:ImageContent?
-        public  let status:String?
+       // public let image:ImageContent?
+        public let status:String?
     }
     
-    public let isBatchSuccessful:Bool
-    public let images:[Image]
+    public let isBatchSuccessful:Bool?
+    public let images:[Image]?
     
     public enum CodingKeys : String, CodingKey {
         case isBatchSuccessful = "IsBatchSuccessful"
