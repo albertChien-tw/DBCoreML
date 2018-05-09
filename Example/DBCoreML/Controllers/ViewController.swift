@@ -17,7 +17,7 @@ class ViewController: UIViewController,UICollectionViewDelegate,UICollectionView
     lazy var mlClient :MLClient = {
         var client = VisionClient.share
         
-        client.configure = VisionConfigure.init(projectId: "075ca9c2-0a8d-4b82-8051-0a395eaa9837", trainingKey: "53b9b55c56a14528937ea3848eab1e8c")
+        client.configure = VisionConfigure.init(projectId: "YOUR-PROJECT-ID", trainingKey: "YOUR-TRAININGKEY")
         let model = MLClient(client: client, delegate: self)
         
         return model
